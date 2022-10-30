@@ -196,51 +196,26 @@ class BookingController extends Controller
     {
         $data = $request->all();
 
-        if (isset($data['distance']) && $data['distance'] != "") {
-            $distance = $data['distance'];
-        } else {
-            $distance = "";
-        }
-        if (isset($data['time']) && $data['time'] != "") {
-            $time = $data['time'];
-        } else {
-            $time = "";
-        }
-        if (isset($data['jobid']) && $data['jobid'] != "") {
-            $jobid = $data['jobid'];
-        }
+        (isset($data['distance']) && $data['distance'] != "") ? $distance = $data['distance'] : $distance = "";
 
-        if (isset($data['session_time']) && $data['session_time'] != "") {
-            $session = $data['session_time'];
-        } else {
-            $session = "";
-        }
+        (isset($data['time']) && $data['time'] != "") ? $time = $data['time'] : $time = "";
+
+        (isset($data['jobid']) && $data['jobid'] != "") ? $jobid = $data['jobid'] : $jobid = "";
+
+        (isset($data['session_time']) && $data['session_time'] != "") ? $session = $data['session_time'] : $session = "";
+
+        (isset($data['manually_handled']) && $data['manually_handled'] == "true") ? $manually_handled = 'yes' : $manually_handled = "no";
+
+        (isset($data['by_admin']) && $data['by_admin'] == "true") ? $by_admin = 'yes' : $by_admin = "no";
+
+        (isset($data['admincomment']) && $data['admincomment'] != "") ? $admincomment = $data['admincomment'] : $admincomment = "";
 
         if ($data['flagged'] == 'true') {
             if($data['admincomment'] == '') return "Please, add comment";
             $flagged = 'yes';
         } else {
             $flagged = 'no';
-        }
-        
-        if ($data['manually_handled'] == 'true') {
-            $manually_handled = 'yes';
-        } else {
-            $manually_handled = 'no';
-        }
-
-        if ($data['by_admin'] == 'true') {
-            $by_admin = 'yes';
-        } else {
-            $by_admin = 'no';
-        }
-
-        if (isset($data['admincomment']) && $data['admincomment'] != "") {
-            $admincomment = $data['admincomment'];
-        } else {
-            $admincomment = "";
-        }
-        if ($time || $distance) {
+        }        if ($time || $distance) {
 
             $affectedRows = Distance::where('job_id', '=', $jobid)->update(array('distance' => $distance, 'time' => $time));
         }
